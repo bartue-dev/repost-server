@@ -15,15 +15,18 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
+  id            String      @id @default(uuid())
+  email         String      @unique
   name          String?
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean     @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  Post          Post[]
+  LikedPost     LikedPost[]
+  Comment       Comment[]
 
   @@map("user")
 }
@@ -71,4 +74,55 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //relation
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  //
+  userId String
+
+  //
+  LikedPost LikedPost[]
+  Comment   Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //self relation
+  parentComment   Comment? @relation("nestedComment", fields: [parentCommentId], references: [id], onDelete: Restrict)
+  parentCommentId String
+
+  childComment Comment[] @relation("nestedComment")
+
+  //relation
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  //
+  userId String
+  postId String?
+}
+
+model LikedPost {
+  id      String   @id @default(uuid())
+  likedAt DateTime @default(now())
+
+  //relation
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String @unique
+  userId String
 }
