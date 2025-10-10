@@ -1,12 +1,30 @@
-import express, {type Request, type Response } from "express";
+import express, {
+    type Request,
+    type Response
+} from "express";
 import { toNodeHandler } from "better-auth/node";
-import { auth, getAuthContext } from "./lib/auth.js";  // Use .ts for ts-node
+import { 
+    auth,
+    getAuthContext
+} from "./lib/auth.js"; 
 import { verfiAuth } from "./middleware/authenticationMiddleware.js";
+import corsOption from "./middleware/corsOption.js"
+import cors from "cors"
+import cookieParser from "cookie-parser"
 
 const app = express();
 const port = 8000;
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
+
+//cors
+app.use(cors(corsOption));
+
+//cookie-parser
+app.use(cookieParser());
+
+//middleware allows urlencoded data
+app.use(express.urlencoded({extended: true}))
 
 // Mount express json middleware after Better Auth handler
 app.use(verfiAuth)
