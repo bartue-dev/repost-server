@@ -24,9 +24,9 @@ model User {
   updatedAt     DateTime    @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
-  Post          Post[]
-  LikedPost     LikedPost[]
-  Comment       Comment[]
+  post          Post[]
+  likedPost     LikedPost[]
+  comment       Comment[]
 
   @@map("user")
 }
@@ -90,8 +90,8 @@ model Post {
   userId String
 
   //
-  LikedPost LikedPost[]
-  Comment   Comment[]
+  likedPost LikedPost[]
+  comment   Comment[]
 }
 
 model Comment {
@@ -101,10 +101,9 @@ model Comment {
   updatedAt DateTime @updatedAt
 
   //self relation
-  parentComment   Comment? @relation("nestedComment", fields: [parentCommentId], references: [id], onDelete: Restrict)
-  parentCommentId String
-
-  childComment Comment[] @relation("nestedComment")
+  parentComment   Comment?  @relation("nestedComment", fields: [parentCommentId], references: [id], onDelete: Restrict)
+  parentCommentId String?
+  childComment    Comment[] @relation("nestedComment")
 
   //relation
   user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
