@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import dotenv from "dotenv"
-import handlePrismaError from "./prismaErrHandler.js";
 import {type PrismaErr } from "./prismaErrHandler.js";
+import handlePrismaError from "./prismaErrHandler.js";
+import dotenv from "dotenv"
 
 dotenv.config();
 
@@ -65,7 +65,7 @@ const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunc
   }
 };
 
-module.exports = errorHandler;
+export default errorHandler
 
 
 /* 
