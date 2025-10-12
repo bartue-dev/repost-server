@@ -27,7 +27,16 @@ class LikedPost {
     });
   }
 
-  async undoLikedPost(id: string, userId: string) {
+  async undoLikedPost(postId: string, userId: string) {
+    return await prisma.likedPost.delete({
+      where: {
+        postId: postId,
+        userId: userId
+      }
+    });
+  }
+
+  async deleteLikedPost(id: string, userId: string) {
     return await prisma.likedPost.delete({
       where: {
         id: id,
