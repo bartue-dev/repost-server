@@ -20,14 +20,14 @@ class Comment {
   //create child comment
   async creatChildComment(
     comment: string,
-    userId: string, 
-    id: string
+    id: string,
+    userId: string
   ) {
     return await prisma.comment.create({
       data: {
         comment: comment,
-        userId: userId,
         parentCommentId: id, 
+        userId: userId,
       }
     })
   }
@@ -59,6 +59,7 @@ class Comment {
     return await prisma.comment.findMany({
       skip: +skip,
       take: +take,
+      orderBy: { createdAt: "asc" },
       where: {
         postId: postId,
       },
