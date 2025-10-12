@@ -49,7 +49,7 @@ export const createComment: RequestHandler[] = [
 
     //check if createdComment return a value if not...
     if (!createdComment) {
-      const err = new CustomErr(`Comment; ${createdComment} cannot be created`, 400)
+      const err = new CustomErr(`Error on creating a comment: ${createdComment}`, 400)
       next(err)
       return
     }
@@ -101,7 +101,7 @@ export const createChildComment: RequestHandler[] = [
     );
 
     if (!childComment) {
-      const err = new CustomErr(`Child comment: ${childComment} cannot be create`, 400);
+      const err = new CustomErr(`Error on creating a child comment: ${childComment}`, 400);
       next(err);
       return
     }
@@ -146,16 +146,16 @@ export const getComments: RequestHandler[] = [
       return;
     }
 
-    let Comments;
+    let comments;
     if (skip !== undefined && take !== undefined) {
-      Comments = await commentMethods.getAllCommentsWithPagination(postId, Number(skip), Number(take));
+      comments = await commentMethods.getAllCommentsWithPagination(postId, Number(skip), Number(take));
     } else {
-      Comments = await commentMethods.getAllComments(postId);
+      comments = await commentMethods.getAllComments(postId);
     }
 
 
-    if (!Comments) {
-      const err = new CustomErr(`Comments: ${Comments} cannot be found`, 400);
+    if (!comments) {
+      const err = new CustomErr(`Error on retrieving comments: ${comments}`, 400);
       next(err);
       return
     }
@@ -163,7 +163,7 @@ export const getComments: RequestHandler[] = [
     res.status(200).json({
       success: true,
       data: {
-        Comments
+        comments
       }
     })
   })];
@@ -198,7 +198,7 @@ export const getChildComments: RequestHandler[] = [
 
 
     if (!childComments) {
-      const err = new CustomErr(`Comments: ${childComments} cannot be found`, 404);
+      const err = new CustomErr(`Error on retrieving child comments: ${childComments}`, 404);
       next(err);
       return
     }
@@ -246,7 +246,7 @@ export const updateComment: RequestHandler[] = [
     const updatedComment = await commentMethods.updateComment(comment, user?.id, id);
 
     if (!updatedComment) {
-      const err = new CustomErr(`Comment: ${updatedComment} cannot updated comment`, 400)
+      const err = new CustomErr(`Error on updating a comment: ${updatedComment}`, 400)
       next(err);
       return
     }
@@ -293,7 +293,7 @@ export const deleteComment: RequestHandler[] = [
     const deletedComment = await commentMethods.deleteComment(id, user?.id);
 
     if (!deletedComment) {
-      const err = new CustomErr(`Comment: ${deletedComment}, Cannot be deleted`, 400);
+      const err = new CustomErr(`Error on deleting a comment: ${deletedComment}`, 400);
       next(err);
       return;
     }
