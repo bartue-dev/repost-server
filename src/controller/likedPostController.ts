@@ -43,7 +43,7 @@ export const saveLikedPost: RequestHandler[] = [
     const likedPost = await likedPostMethods.saveLikedPost(postId, user?.id);
 
     if (!likedPost) {
-      const err = new CustomErr(`Error upon saving liked post`, 400);
+      const err = new CustomErr(`Error upon saving liked post: ${likedPost}`, 400);
       next(err);
       return;
     }
@@ -69,7 +69,7 @@ export const getAllLikedPost: RequestHandler = asyncHandler(async (req, res, nex
   const allLikedPost = await likedPostMethods.getAllLikedPost(user?.id);
 
   if (!allLikedPost) {
-    const err = new CustomErr(`Error on retrieving liked posts`, 400);
+    const err = new CustomErr(`Error on retrieving liked posts: ${allLikedPost}`, 400);
     next(err);
     return;
   }
@@ -115,7 +115,7 @@ export const undoLikedPost: RequestHandler[] = [
     const undoLikedPost = await likedPostMethods.undoLikedPost(id, user?.id);
 
     if (!undoLikedPost) {
-      const err = new CustomErr(`Error on undo liked post`, 400)
+      const err = new CustomErr(`Error on undo liked post: ${undoLikedPost}`, 400)
       next(err);
       return;
     }
