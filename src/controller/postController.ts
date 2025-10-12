@@ -1,4 +1,3 @@
-import type { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler"
 import { postMethods } from "../models/postQueries.js";
 import { CustomErr } from "../middleware/customErr.js";
