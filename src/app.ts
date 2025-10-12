@@ -13,6 +13,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import errorHandler from "./middleware/errorHandler.js";
 import postRoute from "./routes/postRoutes.js"
+import commentRoute from "./routes/commentRoutes.js"
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -46,7 +47,8 @@ app.get("/api/me", async (req: Request, res: Response) => {
     })
 })
 
-app.use("/v1/api/post", postRoute)
+app.use("/v1/api/post", postRoute);
+app.use("/v1/api/comment", commentRoute)
 
 //error handler middleware
 app.use(errorHandler)
