@@ -2,14 +2,17 @@ import { Router } from "express";
 import {
   saveLikedPost,
   getAllLikedPost,
-  undoLikedPost
+  undoLikedPost,
+  deleteLikedPost
 } from "../controller/likedPostController.js";
 const router = Router();
 
 router.get("/", getAllLikedPost);
 
-router.post("/post/:postId", saveLikedPost);
+router.route("/post/:postId")
+  .post(saveLikedPost)
+  .delete(undoLikedPost)
 
-router.delete("/:id", undoLikedPost);
+router.delete("/:id", deleteLikedPost);
 
 export default router;
