@@ -101,7 +101,7 @@ model Comment {
   updatedAt DateTime @updatedAt
 
   //self relation
-  parentComment   Comment?  @relation("nestedComment", fields: [parentCommentId], references: [id], onDelete: Restrict)
+  parentComment   Comment?  @relation("nestedComment", fields: [parentCommentId], references: [id], onDelete: Cascade)
   parentCommentId String?
   childComment    Comment[] @relation("nestedComment")
 
