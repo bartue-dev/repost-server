@@ -39,7 +39,7 @@ export const createPost: RequestHandler[] = [
     const post = await postMethods.createPost(title, content, user?.id)
 
     if (!post) {
-      const err = new CustomErr(`Cannot create Post`, 400);
+      const err = new CustomErr(`Error on creating Post: ${post}`, 400);
       next(err);
       return
     }
@@ -77,7 +77,7 @@ export const getAllPost: RequestHandler = asyncHandler(async (req, res, next) =>
   }
 
   if (!posts) {
-    const err = new CustomErr(`${posts} not found`, 404);
+    const err = new CustomErr(`Error on retrieving post: ${posts}`, 400);
     next(err);
     return;
   }
@@ -126,7 +126,7 @@ export const getPost: RequestHandler[] = [
     const post = await postMethods.getPost(user?.id, id);
 
     if (!post) {
-      const err = new CustomErr(`Post not found`, 404);
+      const err = new CustomErr(`Error on retreving a specific post: ${post}`, 404);
       next(err);
       return;
     }
@@ -178,7 +178,7 @@ export const updatePost: RequestHandler[] = [
     const updatedPost = await postMethods.updatePost(id, user?.id, title, content);
 
     if (!updatedPost) {
-      const err = new CustomErr(`${updatedPost} cannot update post`, 400);
+      const err = new CustomErr(`Error on updating post: ${updatedPost}`, 400);
       next(err);
       return;
     }
@@ -229,7 +229,7 @@ export const deletePost: RequestHandler[] = [
   const deletedPost = await postMethods.deletePost(id, user?.id);
 
   if (!deletedPost) {
-    const err = new CustomErr(`${deletePost} cannot delete post`, 400);
+    const err = new CustomErr(`Error on deleting post: ${deletePost}`, 400);
     next(err);
     return;
   }
