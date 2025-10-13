@@ -123,8 +123,8 @@ class Post {
 
   //get public posts in the database
   async getPublicPosts() {
-  return await prisma.post.findMany()
-}
+    return await prisma.post.findMany()
+  }
 }
 
 export const postMethods = new Post();
