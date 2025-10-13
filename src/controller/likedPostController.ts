@@ -10,7 +10,7 @@ import {
   validateUndoLikedPost
 } from "../validator/likedPostValidator.js"
 
-export const saveLikedPost: RequestHandler[] = [
+export const likedPost: RequestHandler[] = [
   ...validateSaveLikedPost, 
   asyncHandler(async (req, res, next) => {
     const { postId } = req.params;
@@ -123,7 +123,6 @@ export const undoLikedPost: RequestHandler[] = [
 
     res.sendStatus(204)
   })];
-
 
 export const deleteLikedPost: RequestHandler[] = [
   ...validateDeleteLikedPost, 
