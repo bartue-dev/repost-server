@@ -2,7 +2,7 @@ import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../lib/auth.js";
 import type { NextFunction, Request, Response } from "express";
 
-export const verfiAuth = async (
+export const verifyAuth = async (
   req: Request,
   res: Response,
   next: NextFunction
