@@ -7,22 +7,23 @@ import {
     auth,
     getAuthContext
 } from "./lib/auth.js"; 
-import { verfiAuth } from "./middleware/authenticationMiddleware.js";
+import { verfyAuth } from "./middleware/authenticationMiddleware.js";
 import corsOption from "./middleware/corsOption.js"
+import credentials from "./middleware/credentials.js";
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import errorHandler from "./middleware/errorHandler.js";
 import postRoute from "./routes/postRoutes.js"
 import commentRoute from "./routes/commentRoutes.js"
 import likedPostRoute from "./routes/likedPostRoutes.js"
+import reactionsRoute from "./routes/reactionsRoutes.js"
 
 const app = express();
 const port = process.env.PORT || 8000;
 
-app.all("/api/auth/{*any}", toNodeHandler(auth));
-// POST http://localhost:8000/api/auth/sign-up/email
-// POST http://localhost:8000/api/auth/sign-in/email
-// Post http://localhost:8000/api/auth/sign-out
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
 
 //cors
 app.use(cors(corsOption));
@@ -33,8 +34,14 @@ app.use(cookieParser());
 //middleware allows urlencoded data
 app.use(express.urlencoded({extended: true}))
 
+//better auth api endpoint
+app.all("/api/auth/{*any}", toNodeHandler(auth));
+// POST http://localhost:8000/api/auth/sign-up/email
+// POST http://localhost:8000/api/auth/sign-in/email
+// Post http://localhost:8000/api/auth/sign-out
+
 // Mount express json middleware after Better Auth handler
-app.use(verfiAuth)
+app.use(verfyAuth)
 // or only apply it to routes that don't interact with Better Auth
 app.use(express.json());
 
@@ -51,6 +58,7 @@ app.get("/api/me", async (req: Request, res: Response) => {
 app.use("/v1/api/post", postRoute);
 app.use("/v1/api/comment", commentRoute);
 app.use("/v1/api/liked-post", likedPostRoute);
+app.use("/v1/api/reactions", reactionsRoute);
 
 //error handler middleware
 app.use(errorHandler)
