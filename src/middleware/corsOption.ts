@@ -1,8 +1,16 @@
-const corsOption = {
-  // origin: "http://your-frontend-domain.com", 
-  origin: "http://localhost:5173", // Replace with your frontend's origin
-  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+import allowedOrigins from "../config/allowedOrigins.js";
+import type { CorsOptions } from "cors";
+
+const corsOptions: CorsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+  
+    optionsSuccessStatus: 200
 }
 
-export default corsOption;
+export default corsOptions;
