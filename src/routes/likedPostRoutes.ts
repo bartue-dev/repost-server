@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  saveLikedPost,
+  likedPost,
   getAllLikedPost,
   undoLikedPost,
   deleteLikedPost
@@ -10,7 +10,7 @@ const router = Router();
 router.get("/", getAllLikedPost);
 
 router.route("/post/:postId")
-  .post(saveLikedPost)
+  .post(likedPost)
   .delete(undoLikedPost)
 
 router.delete("/:id", deleteLikedPost);
