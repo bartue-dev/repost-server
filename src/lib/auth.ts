@@ -4,6 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { fromNodeHeaders } from "better-auth/node";
 import type { Request } from "express";
 import { prisma } from "../models/helper.js";
+import allowedOrigins from "../config/allowedOrigins.js";
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
@@ -12,6 +13,7 @@ export const auth = betterAuth({
       emailAndPassword: { 
       enabled: true, 
     }, 
+    trustedOrigins: allowedOrigins
 });
 
 export const getAuthContext = async (headers: Request["headers"]) => {
