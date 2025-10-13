@@ -15,18 +15,20 @@ datasource db {
 }
 
 model User {
-  id            String      @id @default(uuid())
-  email         String      @unique
+  id            String   @id @default(uuid())
+  email         String   @unique
   name          String?
-  emailVerified Boolean     @default(false)
+  emailVerified Boolean  @default(false)
   image         String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  post          Post[]
-  likedPost     LikedPost[]
-  comment       Comment[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+
+  sessions  Session[]
+  accounts  Account[]
+  post      Post[]
+  likedPost LikedPost[]
+  comment   Comment[]
+  reactions Reactions[]
 
   @@map("user")
 }
@@ -92,6 +94,7 @@ model Post {
   //
   likedPost LikedPost[]
   comment   Comment[]
+  reactions Reactions[]
 }
 
 model Comment {
@@ -123,5 +126,17 @@ model LikedPost {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   postId String @unique
+  userId String
+}
+
+model Reactions {
+  id   String @id @default(uuid())
+  type String
+
+  //relation
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String
   userId String
 }
