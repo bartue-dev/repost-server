@@ -17,7 +17,7 @@ datasource db {
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
-  name          String?
+  name          String?  @unique
   emailVerified Boolean  @default(false)
   image         String?
   createdAt     DateTime @default(now())
@@ -137,6 +137,6 @@ model Reactions {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  postId String
+  postId String @unique
   userId String
 }
