@@ -15,3 +15,9 @@ export const validateGetReactionFromPost = [
     .exists().withMessage("Post id doesn't exist")
     .isUUID().withMessage("Post id must be a valid UUID")
 ]
+
+export const validateDeleteReactions = [
+  param("id").trim()
+    .exists().withMessage("Reactions id doesn't exist")
+    .isUUID().withMessage("Reactions id must be a valid UUID")
+]
