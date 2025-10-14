@@ -7,7 +7,7 @@ import {
     auth,
     getAuthContext
 } from "./lib/auth.js"; 
-import { verfyAuth } from "./middleware/authenticationMiddleware.js";
+import { verifyAuth } from "./middleware/authenticationMiddleware.js";
 import corsOption from "./middleware/corsOption.js"
 import credentials from "./middleware/credentials.js";
 import cors from "cors"
@@ -41,7 +41,7 @@ app.all("/api/auth/{*any}", toNodeHandler(auth));
 // Post http://localhost:8000/api/auth/sign-out
 
 // Mount express json middleware after Better Auth handler
-app.use(verfyAuth)
+app.use(verifyAuth)
 // or only apply it to routes that don't interact with Better Auth
 app.use(express.json());
 
