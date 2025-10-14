@@ -117,13 +117,7 @@ export const getPost: RequestHandler[] = [
       return
     }
 
-    if (!id) {
-      const err = new CustomErr("Post id is undefined", 400);
-      next(err)
-      return
-    }
-
-    const post = await postMethods.getPost(user?.id, id);
+    const post = await postMethods.getPost(user?.id, id!);
 
     if (!post) {
       const err = new CustomErr(`Error on retreving a specific post: ${post}`, 404);
@@ -169,13 +163,7 @@ export const updatePost: RequestHandler[] = [
       return;
     }
 
-    if (!id) {
-      const err = new CustomErr("Post id is undefined", 400);
-      next(err);
-      return
-    }
-
-    const updatedPost = await postMethods.updatePost(id, user?.id, title, content);
+    const updatedPost = await postMethods.updatePost(id!, user?.id, title, content);
 
     if (!updatedPost) {
       const err = new CustomErr(`Error on updating post: ${updatedPost}`, 400);
@@ -220,13 +208,7 @@ export const deletePost: RequestHandler[] = [
     return
   }
 
-  if (!id) {
-    const err = new CustomErr("Post id is undefined", 400);
-    next(err);
-    return
-  }
-
-  const deletedPost = await postMethods.deletePost(id, user?.id);
+  const deletedPost = await postMethods.deletePost(id!, user?.id);
 
   if (!deletedPost) {
     const err = new CustomErr(`Error on deleting post: ${deletePost}`, 400);
