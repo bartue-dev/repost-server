@@ -39,13 +39,7 @@ export const createComment: RequestHandler[] = [
       return
     }
 
-    if (!postId) {
-      const err = new CustomErr("Post id is undefined", 400);
-      next(err);
-      return
-    }
-
-    const createdComment = await commentMethods.createComment(comment, user?.id, postId);
+    const createdComment = await commentMethods.createComment(comment, user?.id, postId!);
 
     //check if createdComment return a value if not...
     if (!createdComment) {
@@ -60,14 +54,14 @@ export const createComment: RequestHandler[] = [
         createdComment
       }
     });
-  })];
+})];
 
 //create child comment
 export const createChildComment: RequestHandler[] = [
   ...validateCreateChildComment,
   asyncHandler(async (req, res, next) => {
     const { comment } = req.body;
-    const { id, postId } = req.params;
+    const { id } = req.params;
     const session = await getAuthContext(req.headers);
     const user = session?.user;
 
@@ -88,15 +82,10 @@ export const createChildComment: RequestHandler[] = [
       return
     }
 
-    if (!id || !postId) {
-      const err = new CustomErr("Comment id is undefined", 400);
-      next(err);
-      return
-    }
 
     const childComment = await commentMethods.creatChildComment(
       comment, 
-      id,
+      id!,
       user?.id, 
     );
 
@@ -112,7 +101,7 @@ export const createChildComment: RequestHandler[] = [
         childComment
       }
     })
-  })];
+})];
 
 //getAllComment
 export const getComments: RequestHandler[] = [
@@ -140,17 +129,11 @@ export const getComments: RequestHandler[] = [
       return
     }
 
-    if (!postId) {
-      const err = new CustomErr("Post id is undefined", 400);
-      next(err);
-      return;
-    }
-
     let comments;
     if (skip !== undefined && take !== undefined) {
-      comments = await commentMethods.getAllCommentsWithPagination(postId, Number(skip), Number(take));
+      comments = await commentMethods.getAllCommentsWithPagination(postId!, Number(skip), Number(take));
     } else {
-      comments = await commentMethods.getAllComments(postId);
+      comments = await commentMethods.getAllComments(postId!);
     }
 
 
@@ -166,7 +149,7 @@ export const getComments: RequestHandler[] = [
         comments
       }
     })
-  })];
+})];
 
 //get all child comments
 export const getChildComments: RequestHandler[] = [
@@ -183,17 +166,11 @@ export const getChildComments: RequestHandler[] = [
       return;
     }
 
-    if (!id) {
-      const err = new CustomErr("Comment id is undefined", 400)
-      next(err);
-      return;
-    }
-
     let childComments;
     if (skip !== undefined && take !== undefined) {
-      childComments = await commentMethods.getChildCommentsWithPagination(id, Number(skip), Number(take));
+      childComments = await commentMethods.getChildCommentsWithPagination(id!, Number(skip), Number(take));
     } else {
-      childComments = await commentMethods.getChildComments(id);
+      childComments = await commentMethods.getChildComments(id!);
     }
 
 
@@ -209,7 +186,7 @@ export const getChildComments: RequestHandler[] = [
         childComments
       }
     });
-  })];
+})];
 
 //update comment
 export const updateComment: RequestHandler[] = [
@@ -237,13 +214,7 @@ export const updateComment: RequestHandler[] = [
       return;
     }
 
-    if (!id) {
-      const err = new CustomErr("Comment id is undefined", 400)
-      next(err);
-      return
-    }
-
-    const updatedComment = await commentMethods.updateComment(comment, user?.id, id);
+    const updatedComment = await commentMethods.updateComment(comment, user?.id, id!);
 
     if (!updatedComment) {
       const err = new CustomErr(`Error on updating a comment: ${updatedComment}`, 400)
@@ -257,7 +228,7 @@ export const updateComment: RequestHandler[] = [
         updatedComment
       }
     });
-  })];
+})];
 
 //delete comment
 export const deleteComment: RequestHandler[] = [
@@ -284,13 +255,7 @@ export const deleteComment: RequestHandler[] = [
       return
     }
 
-    if (!id) {
-      const err = new CustomErr("Comment id is undefined", 400)
-      next(err);
-      return;
-    }
-
-    const deletedComment = await commentMethods.deleteComment(id, user?.id);
+    const deletedComment = await commentMethods.deleteComment(id!, user?.id);
 
     if (!deletedComment) {
       const err = new CustomErr(`Error on deleting a comment: ${deletedComment}`, 400);
@@ -299,4 +264,4 @@ export const deleteComment: RequestHandler[] = [
     }
 
     res.sendStatus(204)
-  })];
+})];
