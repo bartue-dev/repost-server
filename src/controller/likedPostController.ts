@@ -35,13 +35,7 @@ export const likedPost: RequestHandler[] = [
       return
     }
 
-    if (!postId) {
-      const err = new CustomErr("Post id is undefined", 400);
-      next(err);
-      return;
-    }
-
-    const likedPost = await likedPostMethods.saveLikedPost(postId, user?.id);
+    const likedPost = await likedPostMethods.saveLikedPost(postId!, user?.id);
 
     if (!likedPost) {
       const err = new CustomErr(`Error upon saving liked post: ${likedPost}`, 400);
@@ -55,7 +49,7 @@ export const likedPost: RequestHandler[] = [
         likedPost
       }
     });
-  })];
+})];
 
 export const getAllLikedPost: RequestHandler = asyncHandler(async (req, res, next) => {
   const session = await getAuthContext(req.headers);
@@ -107,13 +101,7 @@ export const undoLikedPost: RequestHandler[] = [
       return;
     }
 
-    if (!postId) {
-      const err = new CustomErr("Post id is undefined", 400);
-      next(err);
-      return
-    }
-
-    const undoLikedPost = await likedPostMethods.undoLikedPost(postId, user?.id);
+    const undoLikedPost = await likedPostMethods.undoLikedPost(postId!, user?.id);
 
     if (!undoLikedPost) {
       const err = new CustomErr(`Error on undo liked post: ${undoLikedPost}`, 400)
@@ -122,7 +110,7 @@ export const undoLikedPost: RequestHandler[] = [
     }
 
     res.sendStatus(204)
-  })];
+})];
 
 export const deleteLikedPost: RequestHandler[] = [
   ...validateDeleteLikedPost, 
@@ -148,13 +136,7 @@ export const deleteLikedPost: RequestHandler[] = [
       return;
     }
 
-    if (!id) {
-      const err = new CustomErr("Liked post id is undefined", 400);
-      next(err);
-      return
-    }
-
-    const deletedLikedPost = await likedPostMethods.deleteLikedPost(id, user?.id);
+    const deletedLikedPost = await likedPostMethods.deleteLikedPost(id!, user?.id);
 
     if (!deletedLikedPost) {
       const err = new CustomErr(`Error on deleting liked post: ${deletedLikedPost}`, 400)
@@ -163,4 +145,4 @@ export const deleteLikedPost: RequestHandler[] = [
     }
 
     res.sendStatus(204)
-  })];
+})];
