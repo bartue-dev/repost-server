@@ -4,6 +4,7 @@ import { getAuthContext } from "../lib/auth.js";
 import type { RequestHandler } from "express";
 import {
   validateCreateReactions,
+  validateDeleteReactions,
   validateGetReactionFromPost
 } from "../validator/reactionsValidator.js"
 import { validationResult } from "express-validator";
@@ -34,13 +35,13 @@ export const createReactions: RequestHandler[] = [
     return
   }
 
-  if (!postId) {
-    const err = new CustomErr("Post id is undefined", 400)
+  const reactions = await reactionsMethods.upsertReactions(type, postId!, user?.id)
+
+  if (!reactions) {
+    const err = new CustomErr(`Error on creating reactions ${reactions}`, 400)
     next(err);
     return;
   }
-
-  const reactions = await reactionsMethods.createReactions(type, postId, user?.id)
 
   res.status(201).json({
     success: true,
@@ -66,17 +67,44 @@ export const getReactionsFromPost: RequestHandler[] = [
     return;
   }
 
-  if (!postId) {
-    const err = new CustomErr("Post id is undefined", 400);
-    next(err);
-    return
-  }
+  const reactions = await reactionsMethods.getReactionsFromPost(postId!);
 
-  const reactionCount = await reactionsMethods.getReactionsFromPost(postId);
+  if (!reactions) {
+    const err = new CustomErr(`Error on retrieving reactions ${reactions}`, 400)
+    next(err);
+    return;
+  }
 
   res.status(200).json({
     success: true,
-    data: { reactionCount }
+    data: { reactions }
   })
 
 })]
+
+export const deleteReactions: RequestHandler[] = [
+  ...validateDeleteReactions
+  ,asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  
+  //validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      status: 400,
+      message: "validation error",
+      error: errors.array()
+    });
+    return
+  } 
+
+  const reactions = await reactionsMethods.deleteReaction(id!)
+
+  if (!reactions) {
+    const err = new CustomErr(`Error on delete reactions ${reactions}`, 400)
+    next(err);
+    return;
+  }
+
+  res.sendStatus(204)
+})] 
