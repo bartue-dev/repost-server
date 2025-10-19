@@ -131,12 +131,21 @@ model LikedPost {
 
 model Reactions {
   id   String @id @default(uuid())
-  type String
+  type Type   @default(LIKED)
 
   //relation
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  postId String @unique
+  postId String
   userId String
+
+  @@unique([postId, userId])
+}
+
+enum Type {
+  LIKED
+  LOVED
+  APPLAUSE
+  COOL
 }
