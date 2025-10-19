@@ -17,6 +17,7 @@ import postRoute from "./routes/postRoutes.js"
 import commentRoute from "./routes/commentRoutes.js"
 import likedPostRoute from "./routes/likedPostRoutes.js"
 import reactionsRoute from "./routes/reactionsRoutes.js"
+import publicRoute from "./routes/publicRoutes.js"
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -40,21 +41,15 @@ app.all("/api/auth/{*any}", toNodeHandler(auth));
 // POST http://localhost:8000/api/auth/sign-in/email
 // Post http://localhost:8000/api/auth/sign-out
 
+//public routes
+app.use("/v1/api/public-post", publicRoute)
+
 // Mount express json middleware after Better Auth handler
 app.use(verifyAuth)
 // or only apply it to routes that don't interact with Better Auth
 app.use(express.json());
 
 //routes
-app.get("/api/me", async (req: Request, res: Response) => {
-    const user = await getAuthContext(req.headers);
-
-    console.log(user)
-    res.status(200).json({
-        user: user?.user
-    })
-})
-
 app.use("/v1/api/post", postRoute);
 app.use("/v1/api/comment", commentRoute);
 app.use("/v1/api/liked-post", likedPostRoute);
