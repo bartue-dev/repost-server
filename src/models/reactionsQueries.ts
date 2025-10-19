@@ -1,16 +1,17 @@
 import { prisma } from "./helper.js";
+import {Type} from "@prisma/client"
 
 class Reactions {
 
   //create reactions
-  async upsertReactions(
-    type: string, 
+  async createReactions(
+    type: Type, 
     postId: string, 
     userId: string
   ) {
     return await prisma.reactions.upsert({
-      where: { postId: postId },
-      update: { type: type },
+      where: {postId_userId: {postId, userId}},
+      update: {type: type},
       create: {
         type: type,
         postId: postId,
@@ -32,6 +33,22 @@ class Reactions {
       where: { postId: postId }
     })
   }
+
+  //update reactions
+  // async updateReactions(
+  //   id: string, 
+  //   type: string,
+  //   userId: string
+  // ) {
+  //   return await prisma.reactions.update({
+  //     where: { 
+  //       id: id, 
+  //     },
+  //     data: {
+  //       type: type
+  //     }
+  //   })
+  // }
 
   //delete reaction
   async deleteReaction(id: string) {
