@@ -31,7 +31,8 @@ class Post {
         include: {
           comment: {
             include: includeComment(levels)
-          }
+          },
+          tags: true
         }
     });
   }
@@ -121,9 +122,16 @@ class Post {
     });
   }  
 
-  //get public posts in the database
-  async getPublicPosts() {
-    return await prisma.post.findMany()
+  //search posts by tags
+  async searchPostByTags(
+    tags: string[],
+  ) {
+    return await prisma.tags.findMany({
+      where: {
+        tagName: {hasSome: tags}
+      },
+      include: { post: true }
+    })
   }
 }
 
