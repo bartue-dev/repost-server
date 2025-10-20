@@ -18,6 +18,7 @@ import commentRoute from "./routes/commentRoutes.js"
 import likedPostRoute from "./routes/likedPostRoutes.js"
 import reactionsRoute from "./routes/reactionsRoutes.js"
 import publicRoute from "./routes/publicRoutes.js"
+import tagsRoute from "./routes/tagsRoutes.js"
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -42,7 +43,7 @@ app.all("/api/auth/{*any}", toNodeHandler(auth));
 // Post http://localhost:8000/api/auth/sign-out
 
 //public routes
-app.use("/v1/api/public-post", publicRoute)
+app.use("/v1/api/public-data", publicRoute)
 
 // Mount express json middleware after Better Auth handler
 app.use(verifyAuth)
@@ -51,6 +52,7 @@ app.use(express.json());
 
 //routes
 app.use("/v1/api/post", postRoute);
+app.use("/v1/api/tags", tagsRoute);
 app.use("/v1/api/comment", commentRoute);
 app.use("/v1/api/liked-post", likedPostRoute);
 app.use("/v1/api/reactions", reactionsRoute);
