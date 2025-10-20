@@ -21,7 +21,7 @@ Key features:
 - User can have reactions to other POST
 - User able to retrieve all POST or specific POST by user
 - User able to search a POST base on TAGS
-- The app render all POST like a public data
+- The app render public data like POST and COMMENTS
 
 Others:
 
