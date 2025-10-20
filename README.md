@@ -97,6 +97,6 @@ Others:
 - [x] public data
   - [x] retrieve public posts
   - [ ] retrieve public comments
-  - [ ] retrieve top discussion post(a posts that have the most reations in order)
+  - [ ] retrieve top discussion post(a posts that have the most reactions in order)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
