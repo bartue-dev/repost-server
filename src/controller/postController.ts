@@ -9,7 +9,6 @@ import {
   validateGetPost, 
   validateUpdatePost, 
   validateDeletePost,
-  validateSearchPostsByTags
 } from "../validator/postValidator.js"
 
 //create post
@@ -217,38 +216,3 @@ export const deletePost: RequestHandler[] = [
 
   res.sendStatus(204)
 })];
-
-//search posts by tags
-export const searchPostByTags: RequestHandler[] = [
-  ...validateSearchPostsByTags,
-  asyncHandler(async (req, res, next) => {
-    const { tags } = req.query;
-    
-    if (!tags) {
-      const err = new CustomErr("Search tags is undefined", 400);
-      next(err);
-      return
-    }
-
-    let tagsArr: string[] = []
-
-    if (typeof tags === "string") {
-      tagsArr = tags.split(",").map(tag => tag.trim());
-    } else if (Array.isArray(tags)) {
-      tagsArr = tags.map(String).map(tag => tag.trim());
-    }
-
-    const searchPosts = await postMethods.searchPostByTags(tagsArr);
-
-    if (!searchPosts) {
-      const err = new CustomErr("Error on searching a posts", 400);
-      next(err);
-      return;
-    }
-
-    res.status(200).json({
-      success: true,
-      data: {searchPosts}
-    })
-  })
-]
