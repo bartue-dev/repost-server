@@ -121,18 +121,6 @@ class Post {
       }
     });
   }  
-
-  //search posts by tags
-  async searchPostByTags(
-    tags: string[],
-  ) {
-    return await prisma.tags.findMany({
-      where: {
-        tagName: {hasSome: tags}
-      },
-      include: { post: true }
-    })
-  }
 }
 
 export const postMethods = new Post();
