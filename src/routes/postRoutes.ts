@@ -5,14 +5,10 @@ import {
   getPost, 
   updatePost, 
   deletePost,
-  searchPostByTags
 } from "../controller/postController.js"
 const router = Router();
  
 //api route
-
-//search post by tags
-router.get("/search", searchPostByTags)
 
 router.route("/")
   //get all post
