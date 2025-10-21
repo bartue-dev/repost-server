@@ -30,9 +30,3 @@ export const validateDeletePost = [
     .exists().withMessage("Post id doesn't exist")
     .isUUID().withMessage("Post id is not a valid UUID")
 ]
-
-export const validateSearchPostsByTags = [
-  query("tags")
-    .notEmpty().withMessage(`Search tags ${isEmptyMsg}`)
-    .isString().withMessage("Search tags must be a string")
-]
