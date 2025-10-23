@@ -15,7 +15,7 @@ import {
 export const createPost: RequestHandler[] = [
   ...validateCreatePost,
   asyncHandler(async (req, res, next) => {
-    const { title, content } = req.body;
+    const { title, content, tags } = req.body;
     const session = await getAuthContext(req.headers);
     const user = session?.user
 
@@ -36,7 +36,7 @@ export const createPost: RequestHandler[] = [
       return
     }
 
-    const post = await postMethods.createPost(title, content, user?.id)
+    const post = await postMethods.createPost(title, content, tags, user?.id)
 
     if (!post) {
       const err = new CustomErr(`Error on creating Post: ${post}`, 400);
@@ -134,13 +134,10 @@ export const getPost: RequestHandler[] = [
 //update post
 export const updatePost: RequestHandler[] = [
   ...validateUpdatePost, 
-  asyncHandler(async (
-    req, 
-    res, 
-    next
+  asyncHandler(async (req, res, next
   ) => {
     const { id } = req.params;
-    const {title, content} = req.body;
+    const {title, content, tags} = req.body;
     const session = await getAuthContext(req.headers);
     const user = session?.user
     
@@ -161,7 +158,13 @@ export const updatePost: RequestHandler[] = [
       return;
     }
 
-    const updatedPost = await postMethods.updatePost(id!, user?.id, title, content);
+    const updatedPost = await postMethods.updatePost(
+      id!, 
+      user?.id, 
+      title, 
+      content, 
+      tags
+    );
 
     if (!updatedPost) {
       const err = new CustomErr(`Error on updating post: ${updatedPost}`, 400);
