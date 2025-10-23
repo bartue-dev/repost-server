@@ -26,7 +26,7 @@ export const getPublicPost: RequestHandler[] = [
 
   //check first if tags is string then convert it to an array otherwise convert it into string and array
   if (typeof tags === "string") {
-    tagsArr = tags.split(",").map(tag => tag.trim());
+    tagsArr = tags.split(" ").map(tag => tag.trim());
   } else if (Array.isArray(tags)) {
     tagsArr = tags.map(String).map(tag => tag.trim());
   }
