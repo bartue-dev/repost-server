@@ -14,11 +14,7 @@ class PublicData {
   ) {
     return await prisma.post.findMany({
       where: {
-        tags: {
-          some: {
-            tagName: {hasSome: tags}
-          }
-        }
+        tags: {hasSome: tags}
       },
       include: {user:true, reactions: true}
     })
