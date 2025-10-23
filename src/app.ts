@@ -18,7 +18,6 @@ import commentRoute from "./routes/commentRoutes.js"
 import likedPostRoute from "./routes/likedPostRoutes.js"
 import reactionsRoute from "./routes/reactionsRoutes.js"
 import publicRoute from "./routes/publicRoutes.js"
-import tagsRoute from "./routes/tagsRoutes.js"
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -52,7 +51,6 @@ app.use(express.json());
 
 //routes
 app.use("/v1/api/post", postRoute);
-app.use("/v1/api/tags", tagsRoute);
 app.use("/v1/api/comment", commentRoute);
 app.use("/v1/api/liked-post", likedPostRoute);
 app.use("/v1/api/reactions", reactionsRoute);
