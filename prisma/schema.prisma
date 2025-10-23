@@ -29,7 +29,6 @@ model User {
   likedPost LikedPost[]
   comment   Comment[]
   reactions Reactions[]
-  tags      Tags[]
 
   @@map("user")
 }
@@ -83,6 +82,7 @@ model Post {
   id        String   @id @default(uuid())
   title     String
   content   String
+  tags      String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -96,7 +96,6 @@ model Post {
   likedPost LikedPost[]
   comment   Comment[]
   reactions Reactions[]
-  tags      Tags[]
 }
 
 model Comment {
@@ -143,18 +142,6 @@ model Reactions {
   userId String
 
   @@unique([postId, userId])
-}
-
-model Tags {
-  id      String   @id @default(uuid())
-  tagName String[]
-
-  //relation
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  postId String
-  userId String
 }
 
 enum Type {
