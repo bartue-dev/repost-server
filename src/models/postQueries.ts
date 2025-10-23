@@ -8,12 +8,14 @@ class Post {
   async createPost(
     title: string, 
     content: string, 
+    tags: string[],
     userId: string
   ) {
     return await prisma.post.create({
       data: {
         title: title,
         content: content,
+        tags: tags,
         userId: userId
       }
     });
@@ -31,8 +33,7 @@ class Post {
         include: {
           comment: {
             include: includeComment(levels)
-          },
-          tags: true
+          }
         }
     });
   }
@@ -58,7 +59,7 @@ class Post {
     });
   }
 
-  //get specific post
+  //get specific post by user
   async getPost(
       userId: string, 
       id: string,
@@ -82,7 +83,8 @@ class Post {
     id: string, 
     userId: string, 
     title: string, 
-    content: string
+    content: string,
+    tags: string[]
   ) {
     return await prisma.post.update({
       where: {
@@ -91,7 +93,8 @@ class Post {
       },
       data: {
         title: title,
-        content: content
+        content: content,
+        tags: tags
       }
     });
   }
