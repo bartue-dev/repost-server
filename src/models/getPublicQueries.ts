@@ -4,7 +4,15 @@ class PublicData {
   //get public posts
   async getPublicPost() {
     return await prisma.post.findMany({
-      include: {user:true, reactions: true}
+      include: {
+        user:true, 
+        reactions: true, 
+        likedPost: {
+          select: {
+            userId: true
+          }
+        }
+      }
     })
   }
 
@@ -16,7 +24,15 @@ class PublicData {
       where: {
         tags: {hasSome: tags}
       },
-      include: {user:true, reactions: true}
+      include: {
+        user:true, 
+        reactions: true, 
+        likedPost: {
+          select: {
+            userId: true
+          }
+        }
+      }
     })
   }
 }
