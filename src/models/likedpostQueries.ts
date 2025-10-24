@@ -7,7 +7,7 @@ class LikedPost {
   ) {
     return await prisma.likedPost.upsert({
       where: {
-        postId: postId,
+        postId_userId: {postId, userId},
       },
       update: {
         postId: postId
@@ -19,19 +19,18 @@ class LikedPost {
     });
   }
 
-  async getlikedPost(postId: string) {
-    return await prisma.likedPost.findUnique({
-      where: {
-        postId,
-      }
-    });
-  }
+  // async getlikedPost(postId: string) {
+  //   return await prisma.likedPost.findUnique({
+  //     where: {
+  //       postId,
+  //     }
+  //   });
+  // }
 
   async undoLikedPost(postId: string, userId: string) {
     return await prisma.likedPost.delete({
       where: {
-        postId: postId,
-        userId: userId
+        postId_userId: {postId, userId}
       }
     });
   }
