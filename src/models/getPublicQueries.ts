@@ -1,12 +1,39 @@
-import { prisma } from "./helper.js"; 
+import { prisma, includeComment } from "./helper.js"; 
 
 class PublicData {
   //get public posts
-  async getPublicPost() {
+  async getPublicPost(levels = 3) {
     return await prisma.post.findMany({
       include: {
         user:true, 
         reactions: true, 
+        comment: {
+          include: includeComment(levels)
+        },
+        likedPost: {
+          select: {
+            userId: true
+          }
+        },
+      }
+    })
+  }
+
+  //search posts by tags
+  async searchPostByTags(
+    tags: string[],
+    levels = 3
+  ) {
+    return await prisma.post.findMany({
+      where: {
+        tags: {hasSome: tags}
+      },
+      include: {
+        user:true, 
+        reactions: true, 
+        comment:  {
+          include: includeComment(levels)
+        },
         likedPost: {
           select: {
             userId: true
@@ -16,21 +43,20 @@ class PublicData {
     })
   }
 
-  //search posts by tags
-  async searchPostByTags(
-    tags: string[],
-  ) {
-    return await prisma.post.findMany({
+  //get specific post
+  async getSpecificPublicPost(postId: string, levels = 3) {
+    return await prisma.post.findUnique({
       where: {
-        tags: {hasSome: tags}
+        id: postId
       },
       include: {
-        user:true, 
+        user: true, 
         reactions: true, 
+        comment:  {
+          include: includeComment(levels),
+        },
         likedPost: {
-          select: {
-            userId: true
-          }
+          select: { userId: true }
         }
       }
     })
