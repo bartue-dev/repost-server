@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler"
 import { publicMethods } from "../models/getPublicQueries.js";
 import { CustomErr } from "../middleware/customErr.js";
-import { validateSearchPostsByTags } from "../validator/publicDataValidator.js"; 
+import { validateGetSpecificPublicPosts, validateSearchPostsByTags } from "../validator/publicDataValidator.js"; 
 import type { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 
@@ -51,3 +51,34 @@ export const getPublicPost: RequestHandler[] = [
     data: { posts }
   })
 })];
+
+//get public specific posts
+export const getSpecificPublicPost: RequestHandler[] = [
+  ...validateGetSpecificPublicPosts,
+  asyncHandler(async (req, res, next) => {
+    const { postId } = req.params;
+
+    //validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({
+        status: 400,
+        message: "validation error",
+        errors: errors.array()
+      });
+      return
+    }
+
+    const post = await publicMethods.getSpecificPublicPost(postId!);
+
+    if (!post) {
+      const err = new CustomErr("Error on retrieving post", 400)
+      next(err);
+      return
+    }
+
+    res.status(200).json({
+      success: true,
+      data: { post }
+    })
+  })];
