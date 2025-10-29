@@ -43,3 +43,9 @@ export const validateDeleteComment = [
   .exists().withMessage("Comment id doesn't exist")
   .isUUID().withMessage("Comment id must be a valid UUID")
 ]
+
+export const validateGetComment = [
+  param("id")
+  .exists().withMessage("Comment id doesn't exist")
+  .isUUID().withMessage("Comment id must be a valid UUID")
+]
