@@ -158,6 +158,17 @@ export const getComment: RequestHandler[] =[
   asyncHandler(async (req, res, next) => {
   const {id} = req.params;
 
+  //validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      status: 400,
+      message: "validation error",
+      errors: errors.array()
+    });
+    return
+  }
+
   const comment = await commentMethods.getComment(id!);
 
   if (!comment) {
