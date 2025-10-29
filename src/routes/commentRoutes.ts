@@ -5,7 +5,8 @@ import {
   getComments,
   getChildComments,
   updateComment,
-  deleteComment
+  deleteComment,
+  getComment
 } from "../controller/commentController.js"
 const router = Router();
 
@@ -14,6 +15,7 @@ router.route("/post/:postId")
   .get(getComments)
 
 router.route("/:id")
+  .get(getComment)
   .get(getChildComments)
   .put(updateComment)
   .delete(deleteComment)
