@@ -71,6 +71,14 @@ class Comment {
     });
   }
 
+  async getComment(
+    id: string
+  ) {
+    return await prisma.comment.findUnique({
+      where: {id: id}
+    })
+  }
+
   //get child comments
   async getChildComments(id: string) {
     return await prisma.comment.findMany({
