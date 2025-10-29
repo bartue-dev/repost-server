@@ -10,6 +10,7 @@ import {
   validateDeleteComment,
   validateGetAllComments,
   validateGetChildComments,
+  validateGetComment,
   validateUpdateComment
  } from "../validator/commentValidator.js"
 
@@ -150,6 +151,26 @@ export const getComments: RequestHandler[] = [
       }
     })
 })];
+
+//get specific comment
+export const getComment: RequestHandler[] =[
+  ...validateGetComment, 
+  asyncHandler(async (req, res, next) => {
+  const {id} = req.params;
+
+  const comment = await commentMethods.getComment(id!);
+
+  if (!comment) {
+    const err = new CustomErr("Error on retrieving specific comment", 400)
+    next(err)
+    return
+  }
+
+  res.status(200).json({
+    success: true,
+    data: comment
+  })
+})]
 
 //get all child comments
 export const getChildComments: RequestHandler[] = [
