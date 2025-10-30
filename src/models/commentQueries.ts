@@ -123,33 +123,29 @@ class Comment {
   //delete comment recursively
   async deleteComment(
     id: string, 
-    userId: string
   ) {
     const childComment: CommentType[] = await prisma.comment.findMany({
       where:{
         parentCommentId: id,
-        userId: userId
       }
     });
 
     //recursive delation
     for (const child of childComment) {
-      await this.deleteComment(child.id, userId)
+      await this.deleteComment(child.id)
     }
 
     //during recursion delete all the children comment using parentCommentId
     await prisma.comment.deleteMany({
       where: {
-        parentCommentId: id,
-        userId: userId
+        parentCommentId: id
       }
     });
 
     //then delete the parent comment
     return await prisma.comment.delete({
       where: {
-        id: id,
-        userId: userId
+        id: id
       }
     });
   }
