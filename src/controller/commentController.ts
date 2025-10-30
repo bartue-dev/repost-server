@@ -267,14 +267,6 @@ export const deleteComment: RequestHandler[] = [
   ...validateDeleteComment, 
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const session = await getAuthContext(req.headers);
-    const user = session?.user;
-
-    if (!user?.id) {
-      const err = new CustomErr(`Unauthorized`, 401);
-      next(err);
-      return;
-    }
 
     //validation
     const errors = validationResult(req);
@@ -287,7 +279,7 @@ export const deleteComment: RequestHandler[] = [
       return
     }
 
-    const deletedComment = await commentMethods.deleteComment(id!, user?.id);
+    const deletedComment = await commentMethods.deleteComment(id!);
 
     if (!deletedComment) {
       const err = new CustomErr(`Error on deleting a comment: ${deletedComment}`, 400);
