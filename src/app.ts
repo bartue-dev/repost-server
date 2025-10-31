@@ -33,7 +33,7 @@ app.use(cors(corsOption));
 app.use(cookieParser());
 
 //middleware allows urlencoded data
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({extended: true, limit: "50mb"}))
 
 //better auth api endpoint
 app.all("/api/auth/{*any}", toNodeHandler(auth));
@@ -47,7 +47,7 @@ app.use("/v1/api/public-data", publicRoute)
 // Mount express json middleware after Better Auth handler
 app.use(verifyAuth)
 // or only apply it to routes that don't interact with Better Auth
-app.use(express.json());
+app.use(express.json({limit: "50mb"}));
 
 //routes
 app.use("/v1/api/post", postRoute);
