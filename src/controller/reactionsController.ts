@@ -13,42 +13,42 @@ import { reactionsMethods } from "../models/reactionsQueries.js";
 export const createReactions: RequestHandler[] = [
   ...validateCreateReactions,
   asyncHandler(async (req, res, next) => {
-  const { type } = req.body;
-  const { postId } = req.params;
-  const session = await getAuthContext(req.headers);
-  const user = session?.user;
+    const { type } = req.body;
+    const { postId } = req.params;
+    const session = await getAuthContext(req.headers);
+    const user = session?.user;
 
-  if (!user?.id) {
-    const err = new CustomErr("Unauthorized", 401)
-    next(err);
-    return;
-  }
-
-  //validation
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    res.status(400).json({
-      status: 400,
-      message: "validation error",
-      error: errors.array()
-    });
-    return
-  }
-
-  const reactions = await reactionsMethods.createReactions(type, postId!, user?.id)
-
-  if (!reactions) {
-    const err = new CustomErr(`Error on creating reactions ${reactions}`, 400)
-    next(err);
-    return;
-  }
-
-  res.status(201).json({
-    success: true,
-    data: {
-      reactions
+    if (!user?.id) {
+      const err = new CustomErr("Unauthorized", 401)
+      next(err);
+      return;
     }
-  })
+
+    //validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({
+        status: 400,
+        message: "validation error",
+        error: errors.array()
+      });
+      return
+    }
+
+    const reactions = await reactionsMethods.createReactions(type, postId!, user?.id)
+
+    if (!reactions) {
+      const err = new CustomErr(`Error on creating reactions ${reactions}`, 400)
+      next(err);
+      return;
+    }
+
+    res.status(201).json({
+      success: true,
+      data: {
+        reactions
+      }
+    })
 })]
 
 export const getReactionsFromPost: RequestHandler[] = [
