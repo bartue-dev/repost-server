@@ -50,7 +50,11 @@ class LikedPost {
         userId: userId
       },
       include: {
-        post:true,
+        post: {
+          include: {
+            user: { select: { name: true }}
+          }
+        }
       }
     });
   }
