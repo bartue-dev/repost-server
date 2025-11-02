@@ -30,11 +30,19 @@ class Post {
       where: {
           userId: userId
         },
-        include: {
-          comment: {
-            include: includeComment(levels)
+      orderBy: {createdAt: "desc"},
+      include: {
+        user:true, 
+        reactions: true, 
+        comment: {
+          include: includeComment(levels)
+        },
+        likedPost: {
+          select: {
+            userId: true
           }
-        }
+        },
+      }
     });
   }
 
@@ -70,11 +78,6 @@ class Post {
         id: id,
         userId: userId
       },
-      include: {
-        comment: {
-          include: includeComment(levels)
-        }
-      }
     });
   }
 
@@ -113,7 +116,7 @@ class Post {
     //call the recursion deleteComment from commentMethods
     //to delete the child comment then parent comment first before deleting the post
     for (const comment of comments) {
-      await commentMethods.deleteComment(comment.id, userId)
+      await commentMethods.deleteComment(comment.id)
     }
 
     //delete post
