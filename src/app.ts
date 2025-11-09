@@ -13,6 +13,7 @@ import credentials from "./middleware/credentials.js";
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import errorHandler from "./middleware/errorHandler.js";
+import authRoute from "./routes/authRoutes.js"
 import postRoute from "./routes/postRoutes.js"
 import commentRoute from "./routes/commentRoutes.js"
 import likedPostRoute from "./routes/likedPostRoutes.js"
@@ -42,6 +43,7 @@ app.all("/api/auth/{*any}", toNodeHandler(auth));
 // Post http://localhost:8000/api/auth/sign-out
 
 //public routes
+app.use("/v1/api/auth", authRoute)
 app.use("/v1/api/public-data", publicRoute)
 
 // Mount express json middleware after Better Auth handler
